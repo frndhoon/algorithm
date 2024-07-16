@@ -12,7 +12,7 @@ for idx in range(1, pocket_num + 1):
 
 for _ in range(q_num):
     question = input().strip()
-    if question[0].isdigit():
+    if question.isdigit():
         print(pocketmon_dic[int(question)])
     else:
         print(reverse_pocketmon_dic[question])
