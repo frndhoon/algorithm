@@ -15,10 +15,7 @@ for _ in range(see_num):
     man = input().rstrip()
     see_arr.add(man)
 
-for people in listen_arr:
-    if people in see_arr:
-        listen_see_arr.add(people)
-
+listen_see_arr = listen_arr.intersection(see_arr)
 listen_see_arr = sorted(listen_see_arr)
 
 print(len(listen_see_arr))
