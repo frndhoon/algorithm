@@ -7,4 +7,4 @@ while len(card_deck) > 1:
     card_deck.popleft()
     card_deck.append(card_deck.popleft())
 
-print(card_deck[0])
+print(*card_deck)
