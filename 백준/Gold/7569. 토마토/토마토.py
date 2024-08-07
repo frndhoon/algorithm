@@ -6,7 +6,7 @@ dir = [(-1,0,0), (1,0,0), (0,-1,0), (0,1,0), (0,0,-1), (0,0,1)]
 
 boxes_matrix = []
 visited = []
-isAllRipen = True
+isInitAllRipen = True
 
 for _ in range(height):
     boxes_matrix.append([list(map(int, input().split())) for _ in range(depth)])
@@ -16,9 +16,10 @@ for _ in range(height):
 for boxes in boxes_matrix:
     for box in boxes:
         if 0 in box:
-            isAllRipen = False
+            isInitAllRipen = False
             break
-
+    if not isInitAllRipen:
+        break
 
 def bfs(init_coordinate):
     queue = deque(init_coordinate)
@@ -29,7 +30,7 @@ def bfs(init_coordinate):
             nh, nx, ny = current_h + dh, current_x + dx, current_y + dy
             if 0 <= nh < height and 0 <= nx < depth and 0 <= ny < width and boxes_matrix[nh][nx][ny] == 0:
                 visited[nh][nx][ny] = True
-                boxes_matrix[nh][nx][ny] = boxes_matrix[current_h][current_x][current_y] + 1
+                boxes_matrix[nh][nx][ny] = day + 1
                 queue.append((nh, nx, ny))
 
 
@@ -44,21 +45,22 @@ for h in range(height):
                 init_coordinate.append((h, x, y))
 
 
-bfs(init_coordinate)
+def getRipenday(isInitAllRipen, init_coordinate):
+    
+    # 초기에 다 안 익었을 때만, bfs 돌아라
+    if not isInitAllRipen:
+        bfs(init_coordinate)
 
-ripen_day = -1
+        ripen_day = 0
+        for boxes in boxes_matrix:
+            for box in boxes:
+                if 0 in box:
+                    return - 1
+                ripen_day = max(ripen_day, max(box) - 1)
 
-for boxes in boxes_matrix:
-    for box in boxes:
-        # 하나라도 안 익은 게 있다면, 실패(-1)
-        if 0 in box:
-            print(-1)
-            exit()
-        # 아니라면 갱신
-        else:
-            ripen_day = max(ripen_day, max(box) - 1)
+    else:
+        return 0
 
-if isAllRipen:
-    print(0)
-else:
-    print(ripen_day)
+    return ripen_day
+
+print(getRipenday(isInitAllRipen, init_coordinate))
