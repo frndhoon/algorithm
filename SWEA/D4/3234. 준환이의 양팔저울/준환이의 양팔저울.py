@@ -1,11 +1,13 @@
 # 1 <= N <= 9
 # 백트래킹
 
+# 팩토리얼
 def factorial(n):
     result = 1
     for i in range(2, n+1):
         result *= i
     return result
+
 def backtracking(left_scale=0, right_scale=0, cnt=0):
     global answer
 
@@ -28,15 +30,6 @@ def backtracking(left_scale=0, right_scale=0, cnt=0):
                 backtracking(left_scale, right_scale + weight_list[i], cnt + 1)
 
             used[i] = False
-
-# [4] 남은 무게 구하기
-def get_remain_weight(used):
-    remain_weight = 0
-    for i in range(len(used)):
-        if not used[i]:
-            remain_weight += weight_list[i]
-
-    return remain_weight
 
 # [result] 양팔 저울에 모든 무게추를 올리는 방법 출력
 T = int(input())
