@@ -1,31 +1,23 @@
 # [1] 음식 맛 계산하기
-def calculate_flavor_difference(group, matrix):
-    total = 0
-    for i in group:
-        for j in group:
-            if i != j:
-                total += matrix[i][j]
-    return total
+def calculate_flavor_difference(food_a, food_b):
+    global min_difference
+    a_sum, b_sum = 0, 0
+    for i in range(N // 2):  # 반반이므로 반만 탐색하면 됨
+        for j in range(N // 2):
+            a_sum += matrix[food_a[i]][food_a[j]]
+            b_sum += matrix[food_b[i]][food_b[j]]
+    min_difference = min(min_difference, abs(a_sum - b_sum))
 
 # [2] 음식 두 분류로 나누기
-def divide_food(idx, set_a, set_b):
+def divide_food(food_a, food_b, cnt=0):
     global min_difference
-
-    if idx == N:
-        if len(set_a) >= 2 and len(set_b) >= 2:
-            diff_a = calculate_flavor_difference(set_a, matrix)
-            diff_b = calculate_flavor_difference(set_b, matrix)
-            min_difference = min(min_difference, abs(diff_a - diff_b))
+    if cnt == N:
+        if len(food_a) == N // 2:  # N / 2씩 나누어지면 계싼
+            calculate_flavor_difference(food_a, food_b)
         return
 
-    set_a_copy = set_a.copy()
-    set_a_copy.add(idx)
-    divide_food(idx + 1, set_a_copy, set_b)
-
-    set_b_copy = set_b.copy()
-    set_b_copy.add(idx)
-    divide_food(idx + 1, set_a, set_b_copy)
-
+    divide_food(food_a + [cnt], food_b, cnt+1)  # a에 넣기
+    divide_food(food_a, food_b + [cnt], cnt+1)  # b에 넣기
 
 T = int(input())
 
@@ -34,6 +26,6 @@ for testcase in range(1, T + 1):
     matrix = [list(map(int, input().split())) for _ in range(N)]
 
     min_difference = float('inf')
-    divide_food(0, set(), set())
+    divide_food([], [])
 
     print(f"#{testcase} {min_difference}")
