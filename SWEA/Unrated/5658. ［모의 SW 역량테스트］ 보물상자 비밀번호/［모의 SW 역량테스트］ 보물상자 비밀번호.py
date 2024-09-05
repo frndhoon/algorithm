@@ -1,43 +1,34 @@
-from collections import deque
+# [1] N // 4씩 나눠서 비밀번호 해제(set)에 담기
+def divide_box_to_password(box):
+    for i in range(0, box_len, password_len):
+        set_password.add(''.join(box[i:i+password_len]))
+
 T = int(input())
 
-
-# 16진수니 4를 나눈 만큼 반복
-def rotate_password(lst):
-    dq = deque(lst)
-    for _ in range(N//4):
-        dq.appendleft(dq.pop())
-        get_password(dq)
-
-
-# 16진수만큼 쪼개서 리스트로 만들기
-def get_password(dq):
-    password_list = []
-    char = ''.join(list(dq))
-    for idx in range(0, N, N//4):
-        password_list.append(char[idx:idx+N//4])
-
-    change_10_digits(password_list)
-
-
-# 16진수 -> 10진수
-def change_10_digits(lst):
-    global duplicate
-
-    for password in lst:
-        duplicate.add(int(password, 16))
-
-
 for testcase in range(1, T+1):
-    # N: 4의 배수, 숫자 개수
-    # K: K번째로 큰 수(내림차순 정렬 시)
-    N, K = map(int, input().split())
-    password_16_digits = list(input())
+    # N: 숫자의 개수, K: 크기 순서(목표)
+    box_len, target_order = map(int, input().split())
+    password_len = box_len // 4  # 패스워드는 4변으로 나눠짐
 
-    duplicate = set()
+    box = list(input())
 
-    rotate_password(password_16_digits)
-    result = sorted(list(duplicate), reverse=True)
+    set_password = set()
 
-    print(f'#{testcase} {result[K-1]}')
+    # [1] N // 4씩 나눠서 비밀번호 해제(set)에 담기
+    divide_box_to_password(box)
 
+    # [2] 회전하기
+    for _ in range(password_len):  # 비밀번호 길이만큼 회전하면 똑같아짐
+        box = [box[-1]] + box[:box_len-1]
+        divide_box_to_password(box)
+
+    list_password = []
+    # [3] 비밀번호 해제에 담긴 16진수를 10진수로 변경하기
+    for password in set_password:
+        list_password.append(int(password, 16))
+
+    # [4] list로 바꾸고 내림차순 정렬
+    list_password.sort(reverse=True)
+
+    # [5] K번째 수 뽑기
+    print(f'#{testcase} {list_password[target_order-1]}')
