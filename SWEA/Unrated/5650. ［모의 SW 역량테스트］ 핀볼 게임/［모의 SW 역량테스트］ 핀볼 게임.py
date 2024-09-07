@@ -45,9 +45,9 @@ DIRECTION_CHANGE = {
                     }
 
 # 입력 읽기
-test_cases = int(input())
+T = int(input())
 
-for case_number in range(1, test_cases + 1):
+for testcase in range(1, T + 1):
     n = int(input())
 
     # 벽으로 초기화된 보드 (값 5)
@@ -77,4 +77,4 @@ for case_number in range(1, test_cases + 1):
                     score = play_pinball_game(x, y, direction)
                     max_score = max(max_score, score)
 
-    print(f'#{case_number} {max_score}')
+    print(f'#{testcase} {max_score}')
