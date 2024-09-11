@@ -36,16 +36,14 @@ for testcase in range(1, T+1):
     # 환경 부담 세율
     E = float(input())
     min_dist = 0
+    edges_used = 0  # 연결된 간선 수
 
-    while pq:
+    while pq and edges_used < island_cnt - 1:
         dist, start, end = heapq.heappop(pq)
-
-        
-        if parents.count(0) == island_cnt:
-            break
 
         if find(start) != find(end):
             min_dist += dist
             union(start, end)
+            edges_used += 1  # 간선 하나 사용
 
     print(f'#{testcase} {round(min_dist*E)}')
