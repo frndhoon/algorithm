@@ -40,6 +40,10 @@ for testcase in range(1, T+1):
     while pq:
         dist, start, end = heapq.heappop(pq)
 
+        
+        if parents.count(0) == island_cnt:
+            break
+
         if find(start) != find(end):
             min_dist += dist
             union(start, end)
