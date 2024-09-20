@@ -2,42 +2,49 @@ from collections import defaultdict, deque
 
 ladder_cnt, snake_cnt = map(int, input().split())
 
-board = {}
+ladders = defaultdict(list)
+snakes = defaultdict(list)
 
 for _ in range(ladder_cnt):
     st, ed = map(int, input().split())
-    board[st] = ed
+    ladders[st] = ed
 
 for _ in range(snake_cnt):
     st, ed = map(int, input().split())
-    board[st] = ed
+    snakes[st] = ed
 
 
-def bfs():
+def bfs(start=1, cnt=0):
     """
     bfs 탐색
-    :return: 도착했을 때 주사위 던진 횟수
+    :param start: 시작 좌표
+    :param cnt: 주사위 횟수
+    :return:
     """
-    queue = deque([(1, 0)])  # (position, moves)
-    visited = set()
+
+    queue = deque([(start, cnt)])
+    visited = {start}
 
     while queue:
-        pos, moves = queue.popleft()
+        current, current_cnt = queue.popleft()
+        if current == 100:
+            return current_cnt
 
-        if pos == 100:
-            return moves
+        for i in range(1, 7):
+            next = current + i
 
-        for dice in range(1, 7):
-            next_pos = pos + dice
+            if next > 100: continue
+            
+            if next in ladders:  # 사다리가 있으면 타기
+                next = ladders[next]
+            if next in snakes:  # 뱀이 있다면 뱀 타기
+                next = snakes[next]
 
-            if next_pos > 100:
-                continue
+            if next in visited: continue
 
-            if next_pos in board:
-                next_pos = board[next_pos]
+            visited.add(next)
+            queue.append((next, current_cnt + 1))
 
-            if next_pos not in visited:
-                visited.add(next_pos)
-                queue.append((next_pos, moves + 1))
 
-print(bfs())
+answer = bfs()
+print(answer)
