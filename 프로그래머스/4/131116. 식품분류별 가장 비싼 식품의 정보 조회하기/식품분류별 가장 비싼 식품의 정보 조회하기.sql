@@ -1,0 +1,23 @@
+# 맛있는배추김치, 맛있는마조유, 맛있는소고기국, 맛있는 허니버터칩
+
+SELECT CATEGORY, MAX(PRICE) AS MAX_PRICE, PRODUCT_NAME
+FROM FOOD_PRODUCT
+WHERE (CATEGORY, PRICE) IN (SELECT CATEGORY, MAX(PRICE)
+                            FROM FOOD_PRODUCT
+                            WHERE CATEGORY IN ('과자', '국', '김치', '식용유')
+                            GROUP BY CATEGORY
+                            )
+GROUP BY CATEGORY
+ORDER BY MAX_PRICE DESC
+
+# SELECT CATEGORY, MAX(PRICE) AS MAX_PRICE, PRODUCT_NAME
+# FROM FOOD_PRODUCT
+# WHERE CATEGORY IN ('과자', '국', '김치', '식용유')
+# GROUP BY CATEGORY
+
+
+# SELECT CATEGORY, PRICE, PRODUCT_NAME
+# FROM FOOD_PRODUCT
+# # GROUP BY CATEGORY
+# HAVING CATEGORY IN ('과자', '국', '김치', '식용유')
+# ORDER BY PRICE DESC
